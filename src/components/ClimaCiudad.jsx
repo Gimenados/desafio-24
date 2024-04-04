@@ -3,7 +3,7 @@ import '../styles.css';
 import Icons from './Icons';
 
 function ClimaCiudad() {
-    const [search, setSearch] = useState('roma')
+    const [search, setSearch] = useState('')
     const [values, setValues] = useState('')
     const [icon, setIcon] = useState('')
   
@@ -28,14 +28,14 @@ function ClimaCiudad() {
     let mensaje = '';
         if (values) {
        const temperatura = values.main.temp;
-        if (temperatura > 30) {
+        if (temperatura >= 23) {
           mensaje = 'Hace mucho calor';
-        } else if (temperatura < 10) {
+        } else if (temperatura <= 10) {
           mensaje = 'Hace mucho frío';
         }
     }
   
-    const handleSearch = (e) => {
+    const manejarBuscar = (e) => {
       if(e.key === 'Enter'){      
         setSearch(e.target.value)
       }
@@ -47,10 +47,10 @@ function ClimaCiudad() {
     return (
       <>
       <div className="container">
-        <h2>Clima en la ciudad de:</h2>
+        <h2>Buscar ciudad para conocer el clima</h2>
         <div className='row'>
           <input 
-            onKeyDown={handleSearch}
+            onKeyDown={manejarBuscar}
             type="text"          
             autoFocus
           />
@@ -60,11 +60,11 @@ function ClimaCiudad() {
       <div className='card'>
         {(values) ? (
           <div className='card-container'>
-            <h1 className='city-name'>{values.name}</h1>
-            <p className='temp'>{values.main.temp.toFixed(0)}&deg;</p>
-            <img className='icon' src={Icons(icon)} alt="icon-weather" />
-            <div className='card-footer'>
-            <p className='temp-max-min'>
+            <h1>{values.name}</h1>
+            <p>{values.main.temp.toFixed(0)}&deg;C</p>
+            <img src={Icons(icon)} alt="icon-weather" />
+            <div>
+            <p>
               Temperatura mínima: {values.main.temp_min.toFixed(0)}&deg;C  |  
               Temperatura máxima: {values.main.temp_max.toFixed(0)}&deg;C
             </p>
@@ -72,14 +72,14 @@ function ClimaCiudad() {
             </div>
           </div>
         ) : (
-          <h1>{"City not found"}</h1>
+          <p>{"City not found"}</p>
         )}
   
       </div>
+
   
       </>  
     );
   }
 
 export default ClimaCiudad;
-
